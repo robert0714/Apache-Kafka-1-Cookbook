@@ -10,3 +10,7 @@ master.box
 */**/.DS_Store
 **/**/.DS_Store
 */**/*.log
+*/**/.gradle/
+*/**/.project
+*/**/.settings/
+*/**/build/

@@ -2,6 +2,8 @@ package doubloon;
 
 import java.util.Properties;
 
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+
 public interface Consumer {
 
   public static Properties createConfig(String servers, String groupId) {
