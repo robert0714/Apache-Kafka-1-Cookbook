@@ -10,18 +10,24 @@ import java.io.IOException;
  
 import org.apache.kafka.clients.producer.*; 
  
-public class Enricher implements Producer { 
+public class Enricher implements doubloon.Producer {
  
   private final KafkaProducer<String, String> producer; 
-  private final String enrichedTopic; 
+  private final String enrichedTopic;
+  private  String sourceTopic;
  
   protected static final ObjectMapper MAPPER = new ObjectMapper(); 
  
   public Enricher(String servers, String enrichedTopic) { 
-    this.producer = new KafkaProducer(Producer.createConfig(servers)); 
+    this.producer = new KafkaProducer(doubloon.Producer.createConfig(servers));
     this.enrichedTopic = enrichedTopic; 
-  } 
- 
+  }
+
+  public Enricher(String servers, String sourceTopic, String enrichedTopic) {
+      this (servers,enrichedTopic);
+      this.sourceTopic = sourceTopic;
+  }
+
   @Override 
   public void process(String message) { 
  
@@ -38,8 +44,8 @@ public class Enricher implements Producer {
         ((ObjectNode) root).with("location").put("temperature", 
                 ow.getTemperature(location.latitude + "",  
                                   location.longitude + ""));             //3 
-         
-        Producer.write(this.producer, this.enrichedTopic, 
+
+        doubloon.Producer.write(this.producer, this.enrichedTopic,
                 MAPPER.writeValueAsString(root));                        //4 
       } 
     } catch (IOException e) { 
